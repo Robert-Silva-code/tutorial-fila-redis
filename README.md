@@ -89,7 +89,7 @@ OK
 
 Três observações para guardar:
 
-- **Nomes de chave com dois-pontos** (`aluno:1:nome`) são só uma convenção para organizar o espaço de nomes; o Redis não cria pastas.
+- **Os dois-pontos são só parte do nome** (`aluno:1:nome`): para o Redis, esse texto inteiro é **uma** chave, sem pastas nem hierarquia. A convenção `tipo:id` organiza os nomes para quem lê, permite buscas como `SCAN 0 MATCH aluno:*` e faz ferramentas como o Redis Insight exibirem as chaves em árvore. Para um objeto com vários atributos, porém, o mais comum é usar só `aluno:1` como chave e guardar `nome` como **campo** de um Hash — veja "Chave com dois-pontos ou Hash?" no fim da seção 4.
 - **`INCR` é atômico**: mil clientes incrementando ao mesmo tempo nunca perdem uma contagem. É o mesmo princípio que torna as filas seguras.
 - **Evite `KEYS *` em produção**: ele percorre todas as chaves de uma vez e trava o servidor. Use `SCAN 0 MATCH aluno:* COUNT 100`, que devolve as chaves aos poucos.
 
@@ -147,6 +147,48 @@ Os exemplos abaixo mostram cada tipo no `redis-cli`:
 
 No `SADD` acima, `redes` aparece duas vezes, mas só é contado uma vez: o retorno `2` indica quantos membros **novos** entraram.
 
+**Chave com dois-pontos ou Hash?**
+
+O mesmo aluno pode ser guardado de duas formas, e as duas usam a convenção de nomes com dois-pontos. A diferença é **onde termina o nome da chave**: na primeira, o atributo faz parte do nome; na segunda, o nome para em `aluno:2` e o atributo vira um campo dentro do valor.
+
+```text
+# Forma 1 — uma String por atributo: "nome" faz parte do NOME da chave
+127.0.0.1:6379> SET aluno:1:nome "Maria"
+127.0.0.1:6379> SET aluno:1:curso "TSI"
+127.0.0.1:6379> SET aluno:1:periodo 3
+127.0.0.1:6379> GET aluno:1:nome
+"Maria"
+
+# Forma 2 — um Hash por aluno: a chave é aluno:2 e "nome" é um CAMPO
+127.0.0.1:6379> HSET aluno:2 nome "Ana" curso "TSI" periodo 5
+(integer) 3
+127.0.0.1:6379> HGET aluno:2 nome
+"Ana"
+```
+
+Lendo `HSET chave campo valor [campo valor ...]` peça por peça: `aluno:2` é a **chave** (o namespace `aluno:` mais o id `2`), `nome` é o **campo** e `"Ana"` é o **valor**. O namespace continua no nome da chave; só o último pedaço saiu do nome e foi para dentro do Hash. A listagem das chaves mostra a diferença:
+
+```text
+$ redis-cli --scan --pattern 'aluno:*'
+aluno:1:curso
+aluno:1:nome
+aluno:1:periodo
+aluno:2
+```
+
+As duas formas não se misturam: `HGET aluno:1:nome nome` falha com `WRONGTYPE`, porque `aluno:1:nome` é uma String, e `GET aluno:2` falha pelo mesmo motivo, porque `aluno:2` é um Hash.
+
+| Critério | Forma 1: `SET aluno:1:nome ...` | Forma 2: `HSET aluno:1 nome ...` |
+| --- | --- | --- |
+| Chaves por aluno | Uma por atributo (3 no exemplo) | Uma só |
+| Ler o aluno inteiro | `MGET` listando cada chave | `HGETALL aluno:1` |
+| Memória para 1.000 alunos com 3 atributos (medido no Redis 7.0) | Cerca de 320 KB, em 3.000 chaves | Cerca de 120 KB, em 1.000 chaves |
+| Apagar o aluno | Um `DEL` com todas as chaves | `DEL aluno:1` |
+| Somar 1 a um atributo | `INCR aluno:1:periodo` | `HINCRBY aluno:1 periodo 1` |
+| Prazo de expiração só para um atributo | `EXPIRE` na chave, em qualquer versão | `HEXPIRE`, só a partir do Redis 7.4 |
+
+**Regra prática: um objeto = um Hash**, com a chave no formato `tipo:id` (`aluno:1`, `pdf:job:<id>`). Use chaves separadas no formato `tipo:id:atributo` quando aquele dado tiver vida própria: outro tipo de estrutura (uma List `aluno:1:notas`, um Set `aluno:1:disciplinas`), um prazo de expiração próprio, ou leitura e escrita independentes do resto. É o que os projetos deste tutorial fazem: `pdf:job:<id>` é um Hash com os dados do job, e `pdf:processando:worker-1` é uma List à parte, porque é uma fila.
+
 ## 5. Fila como estrutura de dados
 
 Uma fila é uma coleção em que o primeiro elemento a entrar é o primeiro a sair — **FIFO** (*First In, First Out*), como a fila de um banco. Inserções acontecem só no **fim** e remoções só no **início**.
@@ -158,9 +200,40 @@ Uma fila é uma coleção em que o primeiro elemento a entrar é o primeiro a sa
 | `frente()` | peek / front | Mostra o item do início sem remover | O(1) |
 | `tamanho()` / `estaVazia()` | size / isEmpty | Quantos itens há / se há algum | O(1) |
 
-**Implementação em JavaScript**
+**5.1 Implementação com array**
 
-A versão mais curta usa um array com `push` e `shift`, mas `shift` é O(n): ele reposiciona todos os elementos restantes a cada remoção. A classe abaixo guarda os itens num objeto e controla dois índices, `#inicio` e `#fim`, para que todas as operações sejam O(1).
+A forma mais direta usa um array do JavaScript: `push` coloca no fim e `shift` retira do início.
+
+```javascript
+// fila-array.js — fila com array: push no fim, shift no início
+export class FilaArray {
+  #itens = [];
+
+  enfileirar(item) {          // O(1): coloca no fim do array
+    this.#itens.push(item);
+  }
+
+  desenfileirar() {           // O(n): tira o primeiro e desloca todos os outros
+    return this.#itens.shift();
+  }
+
+  frente() {
+    return this.#itens[0];
+  }
+
+  tamanho() {
+    return this.#itens.length;
+  }
+
+  estaVazia() {
+    return this.#itens.length === 0;
+  }
+}
+```
+
+O problema está no `shift`: para remover o primeiro elemento, ele desloca todos os outros uma posição para a esquerda. Com n itens na fila, cada remoção custa O(n), e esvaziar a fila inteira custa O(n²). A atividade da seção 5.3 mede esse efeito.
+
+**Variação sem deslocamento.** Em vez de mover os itens a cada remoção, a classe `Fila` abaixo guarda os itens num objeto indexado por números (como as posições de um array) e apenas avança o índice `#inicio`. Assim todas as operações ficam O(1). É esta classe que as seções seguintes chamam de `Fila`.
 
 ```javascript
 // fila.js — Fila (FIFO) com operações O(1)
@@ -211,7 +284,180 @@ console.log(atendimento.desenfileirar()); // Bruno
 console.log(atendimento.tamanho());       // 1
 ```
 
-Para sentir a diferença: num teste com 200 mil itens (Node.js 22), esvaziar o array com `shift` levou cerca de 3 segundos; esvaziar a classe `Fila` levou cerca de 10 milissegundos.
+**5.2 Implementação encadeada**
+
+Na fila encadeada não existe um bloco contínuo de posições. Cada item fica dentro de um **nó**, um pequeno objeto com dois campos: `valor` e `proximo`, a referência para o nó seguinte. A fila guarda só duas referências — `#inicio` (o próximo a sair) e `#fim` (o último que entrou) — e por isso nunca precisa deslocar nenhum item.
+
+&#91;embedded content: fila encadeada · 3 nós e 1 novo\]
+
+- **Enfileirar**: cria um nó, faz o antigo último (`#fim.proximo`) apontar para ele e move `#fim` para o nó novo. Se a fila estava vazia, o nó novo também passa a ser o `#inicio`.
+- **Desenfileirar**: guarda o valor do primeiro nó e move `#inicio` para `#inicio.proximo`. O nó antigo fica sem nenhuma referência, e o coletor de lixo do JavaScript libera a memória dele. Se a fila esvaziou, `#fim` também volta a `null`.
+
+```javascript
+// fila-encadeada.js — fila com nós ligados: cada nó aponta para o próximo
+class No {
+  constructor(valor) {
+    this.valor = valor;
+    this.proximo = null;     // referência para o nó seguinte (ou null)
+  }
+}
+
+export class FilaEncadeada {
+  #inicio = null;            // nó que sai primeiro
+  #fim = null;               // último nó que entrou
+  #tamanho = 0;
+
+  enfileirar(item) {         // O(1): liga um nó novo depois do último
+    const novo = new No(item);
+    if (this.#fim) {
+      this.#fim.proximo = novo;  // o antigo último passa a apontar para o novo
+    } else {
+      this.#inicio = novo;       // fila vazia: o novo é também o primeiro
+    }
+    this.#fim = novo;
+    this.#tamanho++;
+  }
+
+  desenfileirar() {          // O(1): o segundo nó vira o primeiro
+    if (this.estaVazia()) return undefined;
+    const { valor } = this.#inicio;
+    this.#inicio = this.#inicio.proximo;
+    if (this.#inicio === null) this.#fim = null; // a fila esvaziou
+    this.#tamanho--;
+    return valor;
+  }
+
+  frente() {
+    return this.#inicio?.valor;
+  }
+
+  tamanho() {
+    return this.#tamanho;
+  }
+
+  estaVazia() {
+    return this.#tamanho === 0;
+  }
+}
+```
+
+O contador `#tamanho` evita percorrer os nós para saber quantos há: sem ele, `tamanho()` seria O(n). E como as três classes têm a mesma interface, o `teste-fila.js` da seção 5.1 roda sem alterações trocando só a importação — no teste deste tutorial, as três devolveram exatamente os mesmos resultados:
+
+```javascript
+import { FilaEncadeada as Fila } from './fila-encadeada.js';
+```
+
+**Array ou encadeada?**
+
+| Característica | `FilaArray` | `Fila` (índices) | `FilaEncadeada` |
+| --- | --- | --- | --- |
+| Enfileirar | O(1) | O(1) | O(1) |
+| Desenfileirar | O(n) | O(1) | O(1) |
+| Ver a frente / tamanho | O(1) | O(1) | O(1) |
+| Acessar a posição i | O(1) | O(1) | O(n): percorre os nós |
+| Memória por item | Só o valor, em posições contíguas | Só o valor | O valor mais um objeto nó |
+| Código | O mais curto | Curto | O mais longo |
+
+**5.3 Atividade: comparando o desempenho**
+
+Nesta atividade você mede, com os relógios do próprio JavaScript, quanto tempo a `FilaArray` e a `FilaEncadeada` levam para encher e esvaziar filas de tamanhos crescentes, e confere na prática a diferença entre O(1) e O(n).
+
+*Como medir tempo em JavaScript*
+
+| Recurso | Onde funciona | Precisão | Quando usar |
+| --- | --- | --- | --- |
+| `performance.now()` | Node.js e navegador | Milissegundos com fração | Medições no código: subtraia duas marcas de tempo |
+| `console.time(rótulo)` e `console.timeEnd(rótulo)` | Node.js e navegador | Milissegundos com fração | Medir um trecho rapidamente; o tempo é impresso, não devolvido |
+| `process.hrtime.bigint()` | Só Node.js | Nanossegundos, como `BigInt` | Trechos muito curtos |
+| `Date.now()` | Node.js e navegador | Milissegundos inteiros; muda se o relógio do sistema for ajustado | Datas e horários — evite em medições de desempenho |
+
+```javascript
+// tempos.js — os três jeitos de medir, num exemplo pequeno
+import { FilaEncadeada } from './fila-encadeada.js';
+const fila = new FilaEncadeada();
+
+console.time('enfileirar 100 mil');
+for (let i = 0; i < 100_000; i++) fila.enfileirar(i);
+console.timeEnd('enfileirar 100 mil');          // enfileirar 100 mil: 13.381ms
+
+const inicio = process.hrtime.bigint();
+while (!fila.estaVazia()) fila.desenfileirar();
+const ns = process.hrtime.bigint() - inicio;     // BigInt, em nanossegundos
+console.log(`desenfileirar 100 mil: ${ns} ns (${Number(ns) / 1e6} ms)`);
+// desenfileirar 100 mil: 2487586 ns (2.487586 ms)
+```
+
+*O script de comparação*
+
+```javascript
+// comparar.js — mede o tempo para encher e esvaziar cada fila com N itens
+import { FilaArray } from './fila-array.js';
+import { FilaEncadeada } from './fila-encadeada.js';
+
+const implementacoes = { FilaArray, FilaEncadeada };
+const tamanhos = [5_000, 10_000, 20_000, 40_000, 80_000];
+const REPETICOES = 3;
+
+function medir(Classe, n) {
+  const fila = new Classe();
+  const t0 = performance.now();               // marca de tempo inicial (ms, com fração)
+  for (let i = 0; i < n; i++) fila.enfileirar({ id: i });
+  const t1 = performance.now();
+  while (!fila.estaVazia()) fila.desenfileirar();
+  const t2 = performance.now();
+  return { enfileirar: t1 - t0, desenfileirar: t2 - t1 };
+}
+
+// mediana: o valor do meio, menos sensível a uma medição atrapalhada
+function mediana(valores) {
+  const ordenados = [...valores].sort((a, b) => a - b);
+  return ordenados[Math.floor(ordenados.length / 2)];
+}
+
+// aquecimento: o compilador JIT otimiza o código nas primeiras execuções
+for (const Classe of Object.values(implementacoes)) medir(Classe, 10_000);
+
+const resultados = [];
+for (const n of tamanhos) {
+  for (const [nome, Classe] of Object.entries(implementacoes)) {
+    const medidas = Array.from({ length: REPETICOES }, () => medir(Classe, n));
+    resultados.push({
+      fila: nome,
+      n,
+      'enfileirar (ms)': Number(mediana(medidas.map((m) => m.enfileirar)).toFixed(2)),
+      'desenfileirar (ms)': Number(mediana(medidas.map((m) => m.desenfileirar)).toFixed(2)),
+    });
+  }
+}
+console.table(resultados);
+```
+
+O script inteiro roda em cerca de 2 segundos. Evite passar de 80 mil itens: no teste, com 160 mil a `FilaArray` levou de 2 a 18 segundos por medição, e a execução completa passou de 1 minuto.
+
+*Roteiro*
+
+1. Na mesma pasta, reúna `fila-array.js`, `fila-encadeada.js` e `comparar.js`, com `"type": "module"` no `package.json`.
+2. Rode `node comparar.js` três vezes e anote na tabela abaixo os valores da última execução.
+3. Numa planilha, faça um gráfico de linhas com n no eixo horizontal e o tempo de desenfileirar no vertical, uma linha por implementação.
+4. Responda às perguntas de discussão.
+
+| n | FilaArray: enfileirar (ms) | FilaArray: desenfileirar (ms) | FilaEncadeada: enfileirar (ms) | FilaEncadeada: desenfileirar (ms) |
+| --- | --- | --- | --- | --- |
+| 5.000 |  |  |  |  |
+| 10.000 |  |  |  |  |
+| 20.000 |  |  |  |  |
+| 40.000 |  |  |  |  |
+| 80.000 |  |  |  |  |
+
+*Perguntas para discussão*
+
+1. Quando n dobra (20 mil → 40 mil → 80 mil), por quanto o tempo de desenfileirar é multiplicado em cada implementação? Relacione com O(n²) para esvaziar a `FilaArray` e O(n) para esvaziar a `FilaEncadeada`.
+2. Por que o tempo de enfileirar é parecido nas duas?
+3. Com 5 mil e 10 mil itens, a `FilaArray` pode parecer quase tão rápida quanto a encadeada. Por quê? Dica: o desempenho real também depende de otimizações do motor V8, que executa o JavaScript no Node.js e no Chrome; pesquise como ele trata o `shift` em arrays pequenos.
+4. Por que o script repete cada medição e usa a mediana, em vez de medir uma vez só? E para que serve o aquecimento antes das medições?
+5. Por que `Date.now()` não é uma boa escolha para estas medições?
+6. **Memória.** Adapte o script para ler `process.memoryUsage().heapUsed` antes e depois de enfileirar 1 milhão de números em cada fila. Rode com `node --expose-gc` e chame `globalThis.gc()` antes de cada leitura. Qual fila usa mais memória, e por quê?
+7. **Desafio.** Inclua a classe `Fila` (índices) da seção 5.1 em `implementacoes` e compare as três. Depois, rode o teste no console do navegador (DevTools) e compare com o Node.js.
 
 **Por que levar a fila para o Redis?** A classe `Fila` vive na memória de **um** processo. Se o processo cair, as tarefas somem; e outro programa, em outra máquina, não enxerga essa fila. Em sistemas reais, quem **produz** tarefas (uma API web) e quem **consome** (um ou mais *workers*) são processos diferentes. O Redis resolve isso: a fila passa a morar num servidor compartilhado, com operações atômicas e persistência opcional.
 
