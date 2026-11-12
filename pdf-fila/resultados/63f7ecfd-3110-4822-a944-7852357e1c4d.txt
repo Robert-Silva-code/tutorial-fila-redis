@@ -1,0 +1,90 @@
+Fundamentos de Redes – Prog. CyberSec – 2026 1º Semestre
+Carga horária: 70 horas (15 síncronas e 55 assíncronas)
+Aulas síncronas: Terças-feiras de 19:00 a 21:30 Horas
+Início: 28 Abril Finalização: 07 Junho - (06 encontros + Atividades Assíncronas + Exame Final do Curso)
+Comprometimento: 75 % de Presença nas aulas síncronas e 100% atividades assíncronas
+Instrutor: Prof. Sergio R. Villarreal
+Objetivo:
+- Apoiar o estudo dos alunos na fase profissionalizante do Programa de CiberEducação
+Objetivos Específicos:
+- Apresentar o curso e a metodologia de trabalho
+- Apresentar os conteúdos principais em aulas síncronas
+- Acompanhar o desempenho e a evolução dos alunos
+Metodologia:
+- Aulas online síncronas
+- Atividades e avaliações assíncronas
+- Práticas com simulador de rede Packet Tracer e capturas de tráfego com Wireshark
+- Exame final individual assíncrono agendado pelo instrutor
+Materiais e recursos:
+- Plataforma NetAcad.com
+- Cisco Webex
+- Slides
+- Simulador de redes Packet Tracer
+- Analisador de protocolos Wireshark
+Cronograma
+AULA DATA ASSUNTOS OBSERVAÇÕES
+1 28 Abr Apresentação do curso e diagnóstico da turma - Cronograma
+Cisco NetAcad e Certificação CCST
+Conceitos básicos de Redes de Computadores (Mod 01 a 07)
+Componentes- LAN e WAN – Cliente Servidor – Meios Físicos
+
+-- 1 of 3 --
+
+
+
+Modelos de camadas: Modelo OSI e Arquitetura TCP-IP
+Encapsulamento de dados
+Demo Packet Tracer
+Atividades Assíncronas:
+- Ler o conteúdo dos módulos 1 a 7
+- Instalar Packet Tracer e criar rede básica
+- Exames PV 01 e 02
+2 05 Mai Endereçamento em redes (Mod 08 a 14)
+- Sistemas numéricos
+- Endereço MAC
+- Endereços IPv4
+- Redes de redes (internet) e roteamento
+Atividades Assíncronas:
+- Ler módulos 08 a 14
+- Exames PV 03 e 04
+3 12 Mai Camadas de Transporte e Acesso à Rede (Mod 15 a 23)
+- Endereçamento das aplicações
+- TCP e UDP
+- Camada de Enlace e ARP
+- Operação do Switch
+- Prática Subredes IPv4
+Atividades Assíncronas:
+Ler módulos 15 a 23
+Exames PV 05, 06 e 07
+4 19 Mai Endereçamento IPv6 e Camada de Aplicação (Mod 24 a 34)
+- IPv6 e NDP
+- Serviços de Endereçamento IP (DHCP e DNS)
+- Serviços de camada de aplicação
+Atividades Assíncronas:
+Ler Módulos 24 a 34
+Exames PV 08, 09, 10 e 11
+5 26 Mai Dispositivos Cisco (Mod 35 e 36)
+- Cisco IOS, uso da CLI e comandos básicos
+- Startup-config e Runnig-config
+- Prática de configuração de um dispositivo
+- Prática subredes e roteamento
+Atividades Assíncronas:
+Ler Módulos 35 a 38
+Exames PV 12, 13 e 14
+
+-- 2 of 3 --
+
+
+
+6 02 Jun Suporte e Segurança de Redes ( Mod 37 a 39)
+- Utilitários de teste de redes
+- Conceitos básicos de CyberSec
+- Principais ameaças
+- Defesa de redes
+Atividade Assíncrona:
+Ler Módulo 39
+Exame PV 15
+Exame final do curso (Data final: 07 de junho)
+
+-- 3 of 3 --
+

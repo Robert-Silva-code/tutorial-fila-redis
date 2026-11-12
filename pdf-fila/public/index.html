@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Extração de texto de PDFs</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 680px; margin: 40px auto; padding: 0 16px; color: #222; }
+    form { display: flex; gap: 12px; align-items: center; padding: 16px; border: 1px solid #ccc; border-radius: 8px; }
+    button { padding: 8px 16px; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+    th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #eee; }
+    .na_fila { color: #a36b00; } .processando { color: #0b6fa4; }
+    .concluido { color: #1a7f37; } .erro { color: #c62828; }
+  </style>
+</head>
+<body>
+  <h1>Extração de texto de PDFs</h1>
+  <p>Envie até 10 PDFs (20 MB cada). Cada arquivo vira um job na fila do Redis.</p>
+
+  <form id="formulario">
+    <input type="file" name="arquivos" accept="application/pdf" multiple required>
+    <button type="submit">Enviar para a fila</button>
+  </form>
+  <p id="mensagem"></p>
+
+  <table>
+    <thead><tr><th>Arquivo</th><th>Status</th><th>Páginas</th><th></th></tr></thead>
+    <tbody id="jobs"></tbody>
+  </table>
+
+  <script>
+    const formulario = document.querySelector('#formulario');
+    const mensagem = document.querySelector('#mensagem');
+    const corpo = document.querySelector('#jobs');
+    const meusJobs = []; // IDs enviados nesta página
+    const rotulos = { na_fila: 'na fila', processando: 'processando', concluido: 'concluído', erro: 'erro' };
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      const resposta = await fetch('/pdfs', { method: 'POST', body: new FormData(formulario) });
+      const dados = await resposta.json();
+      if (!resposta.ok) {
+        mensagem.textContent = dados.erro;
+        return;
+      }
+      mensagem.textContent = `${dados.length} arquivo(s) enviado(s) para a fila.`;
+      meusJobs.push(...dados.map((job) => job.id));
+      formulario.reset();
+    });
+
+    // consulta o status de cada job a cada segundo
+    async function atualizar() {
+      const jobs = await Promise.all(meusJobs.map((id) => fetch(`/pdfs/${id}`).then((r) => r.json())));
+      corpo.replaceChildren(...jobs.map((job) => {
+        const linha = document.createElement('tr');
+        const celulas = [job.nome, rotulos[job.status], `${job.pagina ?? 0}/${job.paginas ?? '?'}`, ''];
+        for (const texto of celulas) {
+          const celula = document.createElement('td');
+          celula.textContent = texto; // textContent: nome de arquivo nunca vira HTML
+          linha.append(celula);
+        }
+        linha.children[1].className = job.status;
+        if (job.status === 'concluido') {
+          const link = Object.assign(document.createElement('a'), {
+            href: `/pdfs/${job.id}/texto`, target: '_blank', textContent: 'ver texto',
+          });
+          linha.children[3].append(link);
+        }
+        return linha;
+      }));
+    }
+    setInterval(atualizar, 1000);
+  </script>
+</body>
+</html>

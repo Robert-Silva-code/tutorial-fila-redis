@@ -1,0 +1,47 @@
+VagaSmart: Sistema de Estacionamento Inteligente
+Qual situação ou desafio o protótipo pretende solucionar?
+O projeto soluciona o problema do tempo excessivo gasto pelos motoristas na
+busca por vagas, o que gera estresse, trânsito interno e um aumento desnecessário
+nas emissões de gases poluentes (carbono). Esse problema ocorre principalmente
+em estacionamentos fechados de grande circulação, como shoppings,
+universidades, condomínios corporativos e hospitais.
+Objetivo da Solução:
+O sistema irá monitorar o status de cada vaga em tempo real e guiar o motorista de
+forma autônoma até o espaço livre mais próximo. Isso elimina a busca aleatória,
+reduz o tempo de direção, diminui a poluição e fornece aos gestores do local dados
+precisos sobre os horários de pico e o uso do espaço.
+Descrição da Solução Proposta:
+● Como o sistema vai funcionar? Cada vaga terá um sensor instalado. Quando
+um carro ocupa a vaga, o sensor detecta sua presença e altera a luz de um
+LED indicador na própria vaga (de verde para vermelho). O microcontrolador
+processa essa mudança e envia a informação via internet para um aplicativo
+de smartphone e para um letreiro na entrada do estacionamento, atualizando
+o número de vagas livres em tempo real.
+● O que ele vai medir (sensor)? O sensor vai medir a presença de um obstáculo
+(o veículo) na vaga, seja calculando a distância (se instalado no teto) ou a
+interrupção de um feixe de luz (se instalado no chão).
+● O que ele vai acionar (atuador)? Para a interface física, o sistema vai acionar
+LEDs individuais acima de cada vaga (Verde = Livre; Vermelho = Ocupada) e
+um Display na cancela de entrada mostrando o total de vagas disponíveis.
+● Como se dará a transferência dos dados entre os dispositivos? A placa
+microcontroladora lerá o estado dos sensores e enviará os dados sem fio,
+através da rede Wi-Fi local, para um servidor em nuvem. O aplicativo do
+usuário e o painel do gestor consumiram esses dados diretamente da nuvem.
+Componentes Esperados
+● Sensor(es): Sensor Ultrassônico (HC-SR04) para medir a distância até o teto
+do carro, ou Sensor de Obstáculo Infravermelho (IR), que são de baixo custo e
+fáceis de instalar.
+● Atuador(es): LEDs (nas cores verde e vermelha) e 1 Display LCD 16x2.
+
+-- 1 of 2 --
+
+
+
+● Placa ou Microcontrolador: ESP32 ou ESP8266 (NodeMCU), pois são baratos,
+fáceis de programar como o Arduino, e já possuem placa de rede Wi-Fi
+integrada de fábrica.
+● Tipo de Conectividade: Wi-Fi (para enviar os dados do microcontrolador para
+a nuvem).
+
+-- 2 of 2 --
+

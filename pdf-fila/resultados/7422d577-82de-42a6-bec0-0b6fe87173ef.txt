@@ -1,0 +1,139 @@
+ATIVIDADE - TCP/IP
+Questões Objetivas (coloque em vermelho a resposta)
+1. O que é um protocolo de rede?
+A) Um hardware de comunicação
+B) Um idioma de comunicação entre dispositivos
+C) Um tipo de cabo de rede
+D) Um software antivírus
+E) Um endereço físico
+2. O conjunto TCP/IP é responsável por:
+A) Apenas redes locais
+B) Comunicação entre computadores formando a Internet
+C) Apenas envio de e-mails
+D) Segurança física da rede
+E) Controle de usuários
+3. Qual protocolo é responsável pela identificação dos hosts?
+A) TCP
+B) UDP
+C) IP
+D) FTP
+E) HTTP
+4. O TCP é caracterizado por ser:
+A) Não confiável
+B) Sem conexão
+C) Orientado à conexão e confiável
+D) Exclusivo para streaming
+E) Usado apenas em LAN
+
+-- 1 of 5 --
+
+
+
+5. O UDP é indicado principalmente para:
+A) Transferência segura de arquivos
+B) Aplicações que exigem confiabilidade
+C) Streaming e aplicações em tempo real
+D) Envio de e-mails
+E) Comunicação criptografada
+6. Qual camada define o tipo de serviço, como HTTP e FTP?
+A) Internet
+B) Transporte
+C) Aplicação
+D) Enlace
+E) Física
+7. Qual porta é utilizada pelo HTTP?
+A) 21
+B) 22
+C) 25
+D) 80
+E) 443
+8. A porta 443 é associada a qual serviço?
+A) FTP
+B) SMTP
+C) DNS
+D) HTTP
+E) HTTPS
+9. O intervalo de portas de 0 a 1023 é reservado para:
+A) Uso livre
+B) Conexões temporárias
+C) Serviços padrão
+D) Aplicações do usuário
+E) Streaming
+
+-- 2 of 5 --
+
+
+
+10. Qual protocolo é usado para mensagens de erro e controle?
+A) TCP
+B) UDP
+C) IP
+D) ICMP
+E) ARP
+11. O endereço MAC está relacionado à camada:
+A) Aplicação
+B) Transporte
+C) Internet
+D) Enlace
+E) Sessão
+12. O processo de dividir dados em pacotes chama-se:
+A) Criptografia
+B) Encapsulamento
+C) Roteamento
+D) Autenticação
+E) Compressão
+Questões Discursivas (Coloque a resposta em vermelho)
+13. Diferencie TCP e UDP quanto à confiabilidade e uso.
+O TCP é um protocolo orientado à conexão que negocia e estabelece uma
+conexão (ou sessão) permanente entre os dispositivos de origem e de destino antes
+de encaminhar qualquer tráfego. Com o estabelecimento da sessão, os dispositivos
+negociam o volume de tráfego esperado que pode ser encaminhado em
+determinado momento e os dados de comunicação entre os dois podem ser
+gerenciados atentamente. Por várias razões, é possível que um segmento seja
+corrompido ou perdido completamente, pois é transmitido pela rede. O TCP garante
+que cada segmento enviado pela fonte chegue ao destino.
+
+-- 3 of 5 --
+
+
+
+UDP é um protocolo de transporte de melhor esforço. O UDP é um protocolo
+de transporte leve que oferece a mesma segmentação de dados e remontagem que
+o TCP, mas sem a confiabilidade e o controle de fluxo do TCP. UDP é destinado a
+aplicações que não requerem controle de fluxo e nem manutenção da sequência de
+mensagens enviadas.
+14. Explique a função da camada de aplicação no modelo TCP/IP.
+Camada de aplicação existe para que o TCP/IP defina o tipo da transmissão
+de dados (carregamento de site, upload de arquivo, envio de email, etc).
+Protocolo adequado para o tipo de transmissão:
+● Navegador de internet (HTTP ou HTTPS)
+● Transferência de arquivos, como o FileZilla (FTP)
+● Serviço de email (SMTP/POP/IMAP)
+15. O que são portas TCP e qual sua importância?
+Quando uma mensagem é entregue usando o TCP ou o UDP, os protocolos e
+os serviços são identificados por um número de porta. Uma porta é um identificador
+numérico dentro de cada segmento que é usado para rastrear conversas
+específicas entre um cliente e um servidor. Cada mensagem que um host envia
+contém uma porta origem e destino.
+16. Diferencie IP de endereço IP.
+IP ou Protocolo de Internet: é o conjunto de regras e definições que permite
+que os dados sejam enviados entre computadores e servidores conectados ao redor
+do mundo.
+Endereço IP: é um elemento específico, utilizado para identificar
+numericamente cada host envolvido no processo de transferência — garantindo,
+desta forma, que os dados alcancem o destino correto.
+
+-- 4 of 5 --
+
+
+
+17. Explique o papel do protocolo ICMP.
+Embora o IP seja apenas um protocolo de melhor esforço, o pacote TCP/IP
+fornece mensagens de erro e mensagens informativas ao se comunicar com outro
+dispositivo IP. Essas mensagens são enviadas com os serviços do ICMP. O objetivo
+dessas mensagens é dar feedback sobre questões relativas ao processamento de
+pacotes IP sob certas condições, e não tornar o IP confiável. As mensagens ICMP
+não são necessárias e muitas vezes não são permitidas por questões de segurança.
+
+-- 5 of 5 --
+

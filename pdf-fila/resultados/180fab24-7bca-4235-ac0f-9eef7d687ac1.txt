@@ -1,0 +1,194 @@
+Este certificado é concedido a
+Robert Vinicius Silva Macedo
+por ter concluído com sucesso o
+Fundamentos da cibersegurança
+oferecido pela Senac de Rio do Sul
+através do programa Cisco Networking Academy.
+Lariana Luy Peixoto
+Instrutor
+Senac de Rio do Sul
+15 Aug 2026
+Data de Conclusão
+Cert ID: 09949a0a-8625-4ca6-a194-4d9352074330
+
+-- 1 of 8 --
+
+
+
+Senac de Rio do Sul 	Course
+Fundamentos de segurança
+cibernética - Senac SC - Prog.…
+Os ataques cibernéticos aumentam com cada conexão digital feitano
+mundo. Saiba como proteger e defender uma organização e adquirir
+habilidades úteis para iniciar sua carreirano campo da segurança
+cibernética.
+SCHEDULE
+Jun 16, 2026 - Aug 16,
+2026
+LANGUAGES
+Português
+INSTRUCTOR
+Sergio Roberto Villarreal ,
++2
+Resume Course
+70 HOURS 	BEGINNER 	INSTRUCTOR-LED
+Overview 	Curriculum 	Find An Academy 	Resources
+Catalog 	Fundamentos de segurança cibernética - Senac SC - Prog. CiberEducação	
+Updates
+Reminder: Check your prole name before course completion. Make sure it matches how you want it to appear on… Read more 	1/1 
+My Learning 	Robert
+Learner	 EN
+Beta
+05/11/2026, 13:06 	Fundamentos de Cibersegurança
+https://www.netacad.com/courses/cybersecurity-essentials?courseLang=pt-BR&instance_id=da1f9595-8091-4dc3-919a-51fe0e1cd23f 	1/18
+
+-- 2 of 8 --
+
+
+
+Here’s what you will learn.
+Versão ministrada por instrutor
+Aprenda com um educador para enriquecer e personalizar a
+sua experiência de aprendizagem.
+"As ameaças cibernéticas afetam a todosnós, e os empregos em
+segurança cibernética continuam crescendo. Na verdade, as violações
+de segurança cibernética estão entre os 5 principais riscos globais, de
+acordo com o Relatório de Riscos Globais do Fórum Econômico Mundial
+(2021). O mundo precisa de diversos prossionais com habilidades
+tecnológicas em segurança cibernética para se defender contra
+adversários digitais astutos.
+Este curso de Fundamentos de Segurança Cibernética prepara você
+para a certicação de segurança cibernética denível básico do
+Cisco Certied Support Technician (CCST) e para cargos de segurança
+cibernética denível básico, como Técnico de Cibersegurança, Analista de
+Segurança Cibernética Júnior ou Suporte Técnico de Nível 1. Você
+aprenderá habilidades vitais, como inteligência de ameaças, segurança
+de rede e gerenciamento de riscos, para proteger você e as
+organizações contra ataques cibernéticos. Se você gosta de resolver
+quebra-cabeças, é apaixonado por tecnologia e gosta de trabalhar
+Como equipe, o campo da segurança cibernética pode ser ideal para
+você."
+Achievements
+Badges you can earn in this course.
+Instructor
+Sergio Roberto Villarreal
+Lariana Luy Peixoto
+Vinicius Bürger Bordin
+Updates
+Reminder: Check your prole name before course completion. Make sure it matches how you want it to appear on… 1/1 
+My Learning
+
+05/11/2026, 13:06 	Fundamentos de Cibersegurança
+https://www.netacad.com/courses/cybersecurity-essentials?courseLang=pt-BR&instance_id=da1f9595-8091-4dc3-919a-51fe0e1cd23f 	2/18
+
+-- 3 of 8 --
+
+
+
+Teste de Conhecimento
+Introdução ao Curso
+Módulo 1: Ameaças, Vulnerabilidades e Ataques à
+Segurança Cibernética
+Módulo 2: Protegendo redes
+Módulo 3: Atacando a Fundação
+Módulo 4: Atacando o que fazemos
+Módulo 5: Comunicação de Rede Sem Fio (Wireless)
+Módulo 6: Infraestrutura de segurança de rede
+Updates
+Reminder: Check your prole name before course completion. Make sure it matches how you want it to appear on… 1/1 
+My Learning
+
+05/11/2026, 13:06 	Fundamentos de Cibersegurança
+https://www.netacad.com/courses/cybersecurity-essentials?courseLang=pt-BR&instance_id=da1f9595-8091-4dc3-919a-51fe0e1cd23f 	3/18
+
+-- 4 of 8 --
+
+
+
+Exame de Ponto de Vericação: segurança de rede
+Módulo 7: O Sistema Operacional Windows
+Módulo 8: Visão geral do Linux
+Módulo 9: Proteção do sistema e do endpoint
+Módulo 10: Princípios, práticas e processos de
+segurança cibernética
+Exame de Ponto de Vericação: sistema operacional e
+segurança de endpoint
+Módulo 11: Compreendendo a defesa
+Módulo 12: Defesa do Sistema e da Rede
+Updates
+Reminder: Check your prole name before course completion. Make sure it matches how you want it to appear on… 1/1 
+My Learning
+
+05/11/2026, 13:06 	Fundamentos de Cibersegurança
+https://www.netacad.com/courses/cybersecurity-essentials?courseLang=pt-BR&instance_id=da1f9595-8091-4dc3-919a-51fe0e1cd23f 	4/18
+
+-- 5 of 8 --
+
+
+
+Módulo 13: Controle de acesso
+Exame de Ponto de Vericação: Princípios, Práticas e
+Processos de Defesa de Rede
+Módulo 14: Listas de Controle de Acesso
+Módulo 15: Tecnologias de rewall
+Módulo 16: Firewalls de política com base em zona
+Módulo 17: segurança da nuvem
+Módulo 18: Criptograa
+Exame de Ponto de Vericação: Firewalls, Criptograa
+e Segurança na Nuvem
+Updates
+Reminder: Check your prole name before course completion. Make sure it matches how you want it to appear on… 1/1 
+My Learning
+
+05/11/2026, 13:06 	Fundamentos de Cibersegurança
+https://www.netacad.com/courses/cybersecurity-essentials?courseLang=pt-BR&instance_id=da1f9595-8091-4dc3-919a-51fe0e1cd23f 	5/18
+
+-- 6 of 8 --
+
+
+
+Módulo 19: Tecnologias e protocolos
+Módulo 20: Dados de segurança de rede
+Módulo 21: Avaliação de alertas
+Exame de Ponto de Vericação: avaliando alertas de
+segurança
+Módulo 22: Governança e conformidade
+Módulo 23: Teste de segurança de rede
+Módulo 24: Inteligência de ameaças
+Módulo 25: Avaliação de vulnerabilidade de endpoint
+Updates
+Reminder: Check your prole name before course completion. Make sure it matches how you want it to appear on… 1/1 
+My Learning
+
+05/11/2026, 13:06 	Fundamentos de Cibersegurança
+https://www.netacad.com/courses/cybersecurity-essentials?courseLang=pt-BR&instance_id=da1f9595-8091-4dc3-919a-51fe0e1cd23f 	6/18
+
+-- 7 of 8 --
+
+
+
+Find An Academy
+Find an academy or location near you that oers this Cisco Networking Academy course.
+Instructor-led courses are in-person or virtual training sessions led by an instructor.
+Módulo 26: Gerenciamento de riscos e controles de
+segurança
+Exame de Ponto de Vericação: Avaliação de
+Vulnerabilidade e Gerenciamento de Risco
+Módulo 27: Análise forense digital e análise e
+resposta a incidentes
+Exame de Ponto de Vericação: Resposta a Incidentes
+Exame nal do curso Fundamentos de
+Cibersegurança
+Location
+City, state, district, count
+By Name
+Search by academy nam Search
+Updates
+Reminder: Check your prole name before course completion. Make sure it matches how you want it to appear on… 1/1 
+My Learning
+
+05/11/2026, 13:06 	Fundamentos de Cibersegurança
+https://www.netacad.com/courses/cybersecurity-essentials?courseLang=pt-BR&instance_id=da1f9595-8091-4dc3-919a-51fe0e1cd23f 	7/18
+
+-- 8 of 8 --
+
