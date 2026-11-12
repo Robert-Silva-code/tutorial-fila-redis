@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "redis": "^6.3.1"
+  },
+  "name": "tutorial-fila-redis",
+  "version": "1.0.0",
+  "description": "Ao final deste tutorial, você terá usado o Redis como servidor de filas e construído, em JavaScript, uma aplicação produtor/consumidor que não perde tarefas quando o worker cai.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Robert-Silva-code/tutorial-fila-redis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Robert-Silva-code/tutorial-fila-redis/issues"
+  },
+  "homepage": "https://github.com/Robert-Silva-code/tutorial-fila-redis#readme"
+}
